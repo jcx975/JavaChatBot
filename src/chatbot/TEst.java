@@ -1,6 +1,7 @@
 package chatbot;
 
 import chatbot.components.BotMath;
+import chatbot.components.BotDirections;
 import java.util.Scanner;
 
 import edu.stanford.nlp.ling.CoreAnnotations.NamedEntityTagAnnotation;
@@ -57,22 +58,39 @@ public class TEst
 			
 			int numCount = 0;
 			String operator = "none";
+			
+			// Get the topic of the sentence
 			for ( CoreMap sentence : sentences )
 			{
-				for ( CoreLabel token : sentence.get(TokensAnnotation.class ))
+				for ( CoreLabel token : sentence.get( TokensAnnotation.class ) )
 				{
-					if ( token.get( PartOfSpeechAnnotation.class ).equals( "CD" ) )
-					{
-						if ( numCount <= 1 )
-							nums[ numCount++ ] = Integer.parseInt( token.get( TextAnnotation.class ) );
-					}
+					String word = token.getString( TextAnnotation.class ).toLowerCase();
 					
-					String word = token.getString(TextAnnotation.class).toLowerCase();
 					if ( BotMath.mathOperations.contains( word ) )
 					{
 						sentenceCategory = "math";
 						operator = word;
+					} else if ( word.equals( "directions" ) )
+					{
+						sentenceCategory = "directions";
 					}
+				}
+			}
+			
+			// Retrieve details from the sentence based on the perceived category.
+			for ( CoreMap sentence : sentences )
+			{
+				for ( CoreLabel token : sentence.get( TokensAnnotation.class ) )
+				{
+					String partOfSpeech = token.get( PartOfSpeechAnnotation.class );
+					String word = token.getString( TextAnnotation.class );
+					
+					if ( sentenceCategory.equals( "math" ) && partOfSpeech.equals( "CD" ) )
+					{
+						if ( numCount <= 1 )
+							nums[ numCount++ ] = Integer.parseInt( token.getString( TextAnnotation.class ) );
+					} else if ( sentenceCategory.equals( "directions" ) && partOfSpeech.equals( "NNP" ) )
+						BotDirections.goToMaps( word );
 				}
 			}
 			
@@ -80,7 +98,8 @@ public class TEst
 			{
 				System.out.println( "Interpretation: " + nums[ 0 ] + " " + operator + " " + nums[ 1 ] + "." );
 				System.out.println( BotMath.calculate( nums[ 0 ], nums[ 1 ], operator ) );
-			}
+			} else if ( sentenceCategory.equals( "directions" ) )
+				
 			
 		
 			for (CoreMap sentence : sentences) {
