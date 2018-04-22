@@ -58,6 +58,7 @@ public class TEst
 			
 			int numCount = 0;
 			String operator = "none";
+			String location = "none";
 			
 			// Get the topic of the sentence
 			for ( CoreMap sentence : sentences )
@@ -90,7 +91,7 @@ public class TEst
 						if ( numCount <= 1 )
 							nums[ numCount++ ] = Integer.parseInt( token.getString( TextAnnotation.class ) );
 					} else if ( sentenceCategory.equals( "directions" ) && partOfSpeech.equals( "NNP" ) )
-						BotDirections.goToMaps( word );
+						location = word;
 				}
 			}
 			
@@ -99,6 +100,10 @@ public class TEst
 				System.out.println( "Interpretation: " + nums[ 0 ] + " " + operator + " " + nums[ 1 ] + "." );
 				System.out.println( BotMath.calculate( nums[ 0 ], nums[ 1 ], operator ) );
 			} else if ( sentenceCategory.equals( "directions" ) )
+			{
+				System.out.println( "Interpretation: Directions to " + location );
+				BotDirections.goToMaps( location );
+			}
 				
 			
 		
@@ -117,7 +122,6 @@ public class TEst
 					System.out.println(String.format("Print: word: [%s] pos: [%s] ne: [%s]", word, pos, ne));
 				}
 			}
-		
 		}
 	}
 }
