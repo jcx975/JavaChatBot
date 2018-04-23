@@ -25,5 +25,6 @@ public class BotMath {
 			result = num1 / num2;
 		
 		return "The result of your query is: " + result;
+		
 	}
 }
