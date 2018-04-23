@@ -1,5 +1,6 @@
 package chatbot;
 
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -25,6 +26,7 @@ public class ChatGUI extends JFrame implements KeyListener{
 	private TextField chatInput;
 	private static TextArea chatDisplay;
 			
+	private static StanfordCoreNLP pipeline;
 	
 	ChatGUI()
 	{
@@ -32,9 +34,9 @@ public class ChatGUI extends JFrame implements KeyListener{
 		setLayout(new FlowLayout());
 		
 		add(new Label("Chat: "));
-		chatInput = new TextField(10);
+		chatInput = new TextField(90);
 		add(chatInput);
-		chatDisplay = new TextArea(40,40);
+		chatDisplay = new TextArea(40,100);
 		chatDisplay.setEditable(false);
 		add(chatDisplay);
 		
@@ -44,15 +46,16 @@ public class ChatGUI extends JFrame implements KeyListener{
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				chatDisplay.append(chatInput.getText() + "\n");
-				giveCommand(chatInput.getText());
+				String inputText = chatInput.getText();
+				chatDisplay.append(inputText + "\n");
 				chatInput.setText("");
+				giveCommand(inputText);
 			}
 		};
 
 		chatInput.addActionListener(enter);
 				
-		setSize(400,750);
+		setSize(1000,750);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		Container con = this.getContentPane();
 		con.add(chat);
@@ -63,14 +66,17 @@ public class ChatGUI extends JFrame implements KeyListener{
 	public static void main(String[] args) {
 		new ChatGUI();
 		
+		chatDisplay.append("Please wait while the Stanford Core Natural Language Processing Loads...\n");
+		Properties props = new Properties();
+		props.setProperty("annotators", "tokenize, ssplit, pos, lemma, ner, parse, dcoref" );
+		pipeline = new StanfordCoreNLP( props );
+
+		chatDisplay.append("Natural Language Processing loaded!\n");
+		
 		chatDisplay.append("Hello! Please give me a command.\n");
 	}
 	
 	public void giveCommand(String input) {
-		Properties props = new Properties();
-		props.setProperty("annotators", "tokenize, ssplit, pos, lemma, ner, parse, dcoref" );
-		StanfordCoreNLP pipeline = new StanfordCoreNLP( props );
-
 		Annotation document = new Annotation( input );
 		
 		CoreDocument cd = new CoreDocument( input );
