@@ -4,6 +4,7 @@ package chatbot;
 import chatbot.utils.InputData;
 
 import chatbot.components.BotMath;
+import chatbot.components.WeatherBot;
 import chatbot.components.BotDirections;
 import edu.stanford.nlp.ling.CoreAnnotations;
 import edu.stanford.nlp.ling.CoreAnnotations.NamedEntityTagAnnotation;
@@ -58,6 +59,8 @@ public class InputProcessor {
 					data.setMathOperator( word );
 				} else if ( word.equals( "directions" ) )
 					data.setCategory( "directions" );
+				else if ( word.equals( "weather" ) )
+					data.setCategory( "weather" );
 			}
 			System.out.println( sentence.get( TreeAnnotation.class ) );
 		}
@@ -73,15 +76,14 @@ public class InputProcessor {
 						data.addInteger( number.get( CoreAnnotations.NumericCompositeValueAnnotation.class ).intValue() );
 					//System.out.println(number.get( CoreAnnotations.NumericCompositeValueAnnotation.class )  );
 				}
-			} else
+			} else if ( data.isCategory( "directions" ) || data.isCategory( "weather" ) )
 			{
 				for ( CoreLabel token : sentence.get( TokensAnnotation.class ) )
 				{
 					String partOfSpeech = token.get( PartOfSpeechAnnotation.class );
 					String word = token.getString( TextAnnotation.class );
 					
-					
-					if ( data.isCategory( "directions" ) && partOfSpeech.equals( "NNP" ) )
+					if ( partOfSpeech.equals( "NNP" ) )
 						data.setLocation( word );
 				}
 			}
@@ -97,6 +99,10 @@ public class InputProcessor {
 			interpretation = "Directions to " + data.getLocation();
 			BotDirections.goToMaps( data );
 			response = "Opening Google Maps.";
+		} else if ( data.isCategory( "weather" ) )
+		{
+			interpretation = "Weather in " + data.getLocation();
+			response = WeatherBot.getWeather( data );
 		} else
 			response = "Sorry, I didn't understand your input.";
 		

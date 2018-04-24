@@ -5,18 +5,18 @@ import java.net.*;
 import com.google.gson.*;
 import com.google.gson.reflect.*;
 
+import chatbot.utils.InputData;
+
 
 public class WeatherBot {
 
-	public static void main(String[] args) {
+	public static String getWeather( InputData input )
+	{
+		String response = "";
 		// TODO Auto-generated method stub
 		String API_KEY = "371db33cd6e9a110a47526681330b720";
 		//String LOCATION = "Winona,us";
-		System.out.println("Please enter a location by city and country"
-				+ " to recieve the current weather." );
-		Scanner scan = new Scanner( System.in );
-		String LOCATION = scan.nextLine();
-		String urlString = "http://api.openweathermap.org/data/2.5/weather?q=" + LOCATION 
+		String urlString = "http://api.openweathermap.org/data/2.5/weather?q=" + input.getLocation() 
 				+ "&appid=" + API_KEY + "&units=imperial";
 		try{
 			StringBuilder result = new StringBuilder();
@@ -28,21 +28,26 @@ public class WeatherBot {
 				result.append(line);
 			}
 			rd.close();
-			System.out.println(result);
+			//System.out.println(result);
 			
 			Map<String, Object> respMap = jsonToMap(result.toString());
 			Map<String, Object> mainMap = jsonToMap(respMap.get("main").toString());
 			Map<String, Object> winMap = jsonToMap(respMap.get("wind").toString());
 			
-			
-			System.out.println("Current Temperature: " + mainMap.get("temp"));
-			System.out.println("Current Humidity: " + mainMap.get("humidity"));
+			response = "Current temperature: " + mainMap.get("temp") + 
+						"\nCurrent humidity: " + mainMap.get("humidity") + 
+						"\nWind speeds: " + winMap.get("speed") + 
+						"\nWind angle: " + winMap.get("deg");
+			//System.out.println("Current Temperature: " + mainMap.get("temp"));
+			//System.out.println("Current Humidity: " + mainMap.get("humidity"));
 			//System.out.println("description: " + mainMap.get("description"));
-			System.out.println("Wind speeds: " + winMap.get("speed"));
-			System.out.println("Wind Angle: " + winMap.get("deg"));
+			//System.out.println("Wind speeds: " + winMap.get("speed"));
+			//System.out.println("Wind Angle: " + winMap.get("deg"));
 		} catch (IOException e) {
 			System.out.println(e.getMessage());
 		}
+		
+		return response;
 
 	}
 	public static Map<String, Object> jsonToMap(String str){
