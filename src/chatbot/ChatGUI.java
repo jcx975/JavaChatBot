@@ -1,4 +1,4 @@
-package chatbot;
+package chatbot.chatbot;
 
 
 import javax.swing.*;

@@ -103,6 +103,9 @@ public class TEst
 			{
 				System.out.println( "Interpretation: Directions to " + location );
 				BotDirections.goToMaps( location );
+			} else
+			{
+				System.out.println( "Sorry, I don't understand your input." );
 			}
 				
 			
