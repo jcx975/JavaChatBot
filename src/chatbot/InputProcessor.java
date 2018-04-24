@@ -6,6 +6,7 @@ import chatbot.utils.InputData;
 import chatbot.components.BotMath;
 import chatbot.components.WeatherBot;
 import chatbot.components.BotDirections;
+import components.BotHelp;
 import edu.stanford.nlp.ling.CoreAnnotations;
 import edu.stanford.nlp.ling.CoreAnnotations.NamedEntityTagAnnotation;
 import edu.stanford.nlp.ling.CoreAnnotations.PartOfSpeechAnnotation;
@@ -61,6 +62,8 @@ public class InputProcessor {
 					data.setCategory( "directions" );
 				else if ( word.equals( "weather" ) )
 					data.setCategory( "weather" );
+				else if ( word.equals( "help" ) )
+					data.setCategory( "help" );
 			}
 			System.out.println( sentence.get( TreeAnnotation.class ) );
 		}
@@ -103,6 +106,10 @@ public class InputProcessor {
 		{
 			interpretation = "Weather in " + data.getLocation();
 			response = WeatherBot.getWeather( data );
+		} else if ( data.isCategory("help") )
+		{
+			interpretation = "Help";
+			response = BotHelp.getHelp();
 		} else
 			response = "Sorry, I didn't understand your input.";
 		
