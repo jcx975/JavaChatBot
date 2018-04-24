@@ -1,6 +1,8 @@
 
 package chatbot;
 
+import chatbot.utils.InputData;
+
 import java.awt.Container;
 import java.awt.FlowLayout;
 import java.awt.Label;
@@ -19,12 +21,14 @@ public class JavaChatBotGUI extends JFrame implements KeyListener
 {
 	JPanel chat = new JPanel();
 	
+	private InputProcessor proc;
 	private TextField chatInput;
 	private static TextArea chatDisplay;
 	public static boolean allowInput = true;
 	
 	public JavaChatBotGUI()
 	{
+		
 		super("Chat Window");
 		setLayout(new FlowLayout());
 		
@@ -41,7 +45,7 @@ public class JavaChatBotGUI extends JFrame implements KeyListener
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				addText(chatInput.getText());
+				addText(chatInput.getText(), true );
 				chatInput.setText("");
 			}
 		};
@@ -55,10 +59,21 @@ public class JavaChatBotGUI extends JFrame implements KeyListener
 		setVisible(true);
 	}
 	
-	public void addText( String text )
+	public void setInputProcessor( InputProcessor proc )
+	{
+		this.proc = proc;
+	}
+	
+	public void addText( String text, boolean isUserInput )
 	{
 		if ( allowInput )
 			chatDisplay.append( text + "\n" );
+		if ( isUserInput )
+		{
+			InputData r = proc.processInput( text );
+			chatDisplay.append( "Interpretation: " + r.getInterpretation() + "\n" );
+			chatDisplay.append( "Response: " + r.getResponse() + "\n" );
+		}
 	}
 	
 	@Override public void keyTyped(KeyEvent evt) {}

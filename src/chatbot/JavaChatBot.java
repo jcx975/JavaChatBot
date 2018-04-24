@@ -23,12 +23,14 @@ public class JavaChatBot
 	public static void main( String[] args )
 	{	
 		JavaChatBotGUI gui = new JavaChatBotGUI();
-		gui.addText( "Please wait, library is loading..." );
+		gui.addText( "Please wait, library is loading...", false );
 		gui.allowInput = false;
 		Properties props = new Properties();
 		props.setProperty("annotators", "tokenize, ssplit, pos, lemma, ner, parse, dcoref" );
 		StanfordCoreNLP pipeline = new StanfordCoreNLP( props );
+		InputProcessor proc = new InputProcessor( props, pipeline );
+		gui.setInputProcessor( proc );
 		gui.allowInput = true;
-		gui.addText( "Loading complete" );
+		gui.addText( "Loading complete", false );
 	}
 }

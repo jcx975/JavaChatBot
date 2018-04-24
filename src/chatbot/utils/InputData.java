@@ -4,10 +4,12 @@ package chatbot.utils;
 public class InputData
 {
 	private String originalText;
+	private String interpretation;
+	private String response;
 	private String category;
 	private String operator;
 	private String location;
-	public static int numCount = 0;
+	public  int numCount = 0;
 	private int[] nums;
 	
 	public InputData( String originalText )
@@ -17,6 +19,26 @@ public class InputData
 		operator = "none";
 		location = "none";
 		nums = new int[ 2 ];
+	}
+	
+	public void setResponse( String response )
+	{
+		this.response = response;
+	}
+	
+	public String getResponse()
+	{
+		return response;
+	}
+	
+	public void setInterpretation( String interpretation )
+	{
+		this.interpretation = interpretation;
+	}
+	
+	public String getInterpretation()
+	{
+		return interpretation;
 	}
 	
 	public void setCategory( String category )
