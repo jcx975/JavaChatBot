@@ -1,5 +1,5 @@
 
-package chatbot.utils;
+package utils;
 
 public class InputData
 {
@@ -9,6 +9,7 @@ public class InputData
 	private String category;
 	private String operator;
 	private String location;
+	private String twitterHandle;
 	private int sentiment;
 	public  int numCount = 0;
 	private int[] nums;
@@ -96,5 +97,16 @@ public class InputData
 	public String getMathOperator()
 	{
 		return operator.toLowerCase();
+	}
+	
+	public void setTwitterHandle(String twitterHandle)
+	{
+		this.twitterHandle = twitterHandle;
+		System.out.println(twitterHandle);
+	}
+	
+	public String getTwitterHandle()
+	{
+		return twitterHandle;
 	}
 }

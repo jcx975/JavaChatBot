@@ -1,28 +1,31 @@
 
-package chatbot;
 
-import chatbot.utils.InputData;
 
-import chatbot.components.BotMath;
-import chatbot.components.WeatherBot;
-import chatbot.components.BotDirections;
-import chatbot.components.BotHelp;
+import java.util.List;
+import java.util.Properties;
+
+import components.BotDirections;
+import components.BotHelp;
+import components.BotMath;
+import components.WeatherBot;
+import components.BotTwitter;
+
 import edu.stanford.nlp.ling.CoreAnnotations;
-import edu.stanford.nlp.ling.CoreAnnotations.NamedEntityTagAnnotation;
 import edu.stanford.nlp.ling.CoreAnnotations.PartOfSpeechAnnotation;
 import edu.stanford.nlp.ling.CoreAnnotations.SentencesAnnotation;
 import edu.stanford.nlp.ling.CoreAnnotations.TextAnnotation;
 import edu.stanford.nlp.ling.CoreAnnotations.TokensAnnotation;
 import edu.stanford.nlp.ling.CoreLabel;
 import edu.stanford.nlp.neural.rnn.RNNCoreAnnotations;
-import edu.stanford.nlp.pipeline.*;
+import edu.stanford.nlp.pipeline.Annotation;
+import edu.stanford.nlp.pipeline.CoreDocument;
+import edu.stanford.nlp.pipeline.StanfordCoreNLP;
 import edu.stanford.nlp.sentiment.SentimentCoreAnnotations;
-import edu.stanford.nlp.sentiment.SentimentCoreAnnotations.SentimentAnnotatedTree;
 import edu.stanford.nlp.trees.Tree;
 import edu.stanford.nlp.trees.TreeCoreAnnotations.TreeAnnotation;
 import edu.stanford.nlp.util.CoreMap;
-import edu.stanford.nlp.util.*;
-import java.util.*;
+import twitter4j.TwitterException;
+import utils.InputData;
 
 public class InputProcessor {
 	Properties props;
@@ -70,6 +73,8 @@ public class InputProcessor {
 					data.setCategory( "weather" );
 				else if ( word.equals( "help" ) )
 					data.setCategory( "help" );
+				else if (word.equals( "tweet" ) || word.equals("tweets"))
+					data.setCategory("tweet");
 			}
 			System.out.println( sentence.get( TreeAnnotation.class ) );
 		}
@@ -95,7 +100,21 @@ public class InputProcessor {
 					if ( partOfSpeech.equals( "NNP" ) )
 						data.setLocation( word );
 				}
-			}
+			} else if (data.isCategory("tweet"))
+				{
+					for (CoreLabel token : sentence.get( TokensAnnotation.class ) )
+					{
+						String word = token.getString( TextAnnotation.class );
+						String firstChar = word.substring(0,1);
+						System.out.println(firstChar);
+						System.out.println(word.substring(1));
+
+						if(firstChar.equals("@"))
+						{
+							data.setTwitterHandle(word.substring(1));
+						}
+					}
+				}
 			Tree tree = sentence.get( SentimentCoreAnnotations.SentimentAnnotatedTree.class );
 			sentiment = RNNCoreAnnotations.getPredictedClass( tree );
 			System.out.println( "Sentiment: " + sentiment );
@@ -119,6 +138,15 @@ public class InputProcessor {
 		{
 			interpretation = "Help";
 			response = BotHelp.getHelp();
+		} else if (data.isCategory("tweet"))
+		{
+			interpretation = "Tweet from " + data.getTwitterHandle();
+			try {
+				response = BotTwitter.retrieveTweet( data );
+			} catch (TwitterException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		} else
 			understood = false;
 		
