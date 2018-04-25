@@ -71,8 +71,9 @@ public class JavaChatBotGUI extends JFrame implements KeyListener
 		if ( isUserInput )
 		{
 			InputData r = proc.processInput( text );
-			chatDisplay.append( "Interpretation: " + r.getInterpretation() + "\n" );
-			chatDisplay.append( "Response: " + r.getResponse() + "\n" );
+			if ( !r.getInterpretation().equals( "none" ) )
+				chatDisplay.append( "Interpretation: " + r.getInterpretation() + "\n" );
+			chatDisplay.append( r.getResponse() + "\n" );
 		}
 	}
 	

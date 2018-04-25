@@ -26,7 +26,7 @@ public class JavaChatBot
 		gui.addText( "Please wait, library is loading...", false );
 		gui.allowInput = false;
 		Properties props = new Properties();
-		props.setProperty("annotators", "tokenize, ssplit, pos, lemma, ner, parse, dcoref" );
+		props.setProperty("annotators", "tokenize, ssplit, pos, lemma, ner, parse, dcoref, sentiment" );
 		StanfordCoreNLP pipeline = new StanfordCoreNLP( props );
 		InputProcessor proc = new InputProcessor( props, pipeline );
 		gui.setInputProcessor( proc );

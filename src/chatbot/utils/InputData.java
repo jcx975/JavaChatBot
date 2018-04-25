@@ -9,6 +9,7 @@ public class InputData
 	private String category;
 	private String operator;
 	private String location;
+	private int sentiment;
 	public  int numCount = 0;
 	private int[] nums;
 	
@@ -39,6 +40,16 @@ public class InputData
 	public String getInterpretation()
 	{
 		return interpretation;
+	}
+	
+	public void setSentiment( int sentiment )
+	{
+		this.sentiment = sentiment;
+	}
+	
+	public int getSentiment()
+	{
+		return sentiment;
 	}
 	
 	public void setCategory( String category )

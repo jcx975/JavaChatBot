@@ -1,4 +1,5 @@
-package components;
+
+package chatbot.components;
 
 public class BotHelp {
 	public static String getHelp() {
