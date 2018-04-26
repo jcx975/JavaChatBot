@@ -33,9 +33,9 @@ public class JavaChatBotGUI extends JFrame implements KeyListener
 		setLayout(new FlowLayout());
 		
 		add(new Label("Chat: "));
-		chatInput = new TextField(10);
+		chatInput = new TextField(90);
 		add(chatInput);
-		chatDisplay = new TextArea(40,40);
+		chatDisplay = new TextArea(27,100);
 		chatDisplay.setEditable(false);
 		add(chatDisplay);
 		
@@ -52,7 +52,7 @@ public class JavaChatBotGUI extends JFrame implements KeyListener
 
 		chatInput.addActionListener(enter);
 				
-		setSize(400,750);
+		setSize(750,500);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		Container con = this.getContentPane();
 		con.add(chat);

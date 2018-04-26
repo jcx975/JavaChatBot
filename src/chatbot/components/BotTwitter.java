@@ -26,6 +26,7 @@ public class BotTwitter {
 		buildTwitterConfig();
 		String response = "";
 		System.out.println(input.getTwitterHandle());
+		//System.out.println(input.getTwitterHandle());
 		List<Status> tweets = twitter.getUserTimeline(input.getTwitterHandle());
         for (Status tweet : tweets) {
         	response = "@" + tweet.getUser().getScreenName() + " - " + tweet.getText();

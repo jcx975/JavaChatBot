@@ -108,6 +108,8 @@ public class InputProcessor {
 						String firstChar = word.substring(0,1);
 						System.out.println(firstChar);
 						System.out.println(word.substring(1));
+						//System.out.println(firstChar);
+						//System.out.println(word.substring(1));
 
 						if(firstChar.equals("@"))
 						{
