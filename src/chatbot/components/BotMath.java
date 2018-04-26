@@ -1,4 +1,10 @@
 
+/*
+ * BotMath
+ * 
+ * Performs basic math operations with two numbers.
+ */
+
 package chatbot.components;
 
 import java.util.Arrays;

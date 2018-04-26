@@ -1,15 +1,22 @@
 
+/*
+ * InputProcessor
+ * 
+ * Processes user inputs using the Stanford CoreNLP
+ * natural language processing library.
+ */
 
+package chatbot;
 
 import java.util.List;
 import java.util.Properties;
 
-import components.BotDirections;
-import components.BotHelp;
-import components.BotMath;
-import components.WeatherBot;
-import components.BotTwitter;
-
+import chatbot.components.BotDirections;
+import chatbot.components.BotHelp;
+import chatbot.components.BotMath;
+import chatbot.components.WeatherBot;
+import chatbot.components.BotTwitter;
+import chatbot.components.DateBot;
 import edu.stanford.nlp.ling.CoreAnnotations;
 import edu.stanford.nlp.ling.CoreAnnotations.PartOfSpeechAnnotation;
 import edu.stanford.nlp.ling.CoreAnnotations.SentencesAnnotation;
@@ -25,7 +32,7 @@ import edu.stanford.nlp.trees.Tree;
 import edu.stanford.nlp.trees.TreeCoreAnnotations.TreeAnnotation;
 import edu.stanford.nlp.util.CoreMap;
 import twitter4j.TwitterException;
-import utils.InputData;
+import chatbot.utils.InputData;
 
 public class InputProcessor {
 	Properties props;
@@ -75,6 +82,8 @@ public class InputProcessor {
 					data.setCategory( "help" );
 				else if (word.equals( "tweet" ) || word.equals("tweets"))
 					data.setCategory("tweet");
+				else if ( word.equals( "time" ) )
+					data.setCategory( "time" );
 			}
 			System.out.println( sentence.get( TreeAnnotation.class ) );
 		}
@@ -101,25 +110,27 @@ public class InputProcessor {
 						data.setLocation( word );
 				}
 			} else if (data.isCategory("tweet"))
+			{
+				for (CoreLabel token : sentence.get( TokensAnnotation.class ) )
 				{
-					for (CoreLabel token : sentence.get( TokensAnnotation.class ) )
+					String word = token.getString( TextAnnotation.class );
+					String firstChar = word.substring(0,1);
+					if(firstChar.equals("@"))
 					{
-						String word = token.getString( TextAnnotation.class );
-						String firstChar = word.substring(0,1);
-						System.out.println(firstChar);
-						System.out.println(word.substring(1));
-						//System.out.println(firstChar);
-						//System.out.println(word.substring(1));
-
-						if(firstChar.equals("@"))
-						{
-							data.setTwitterHandle(word.substring(1));
-						}
+						data.setTwitterHandle(word.substring(1));
 					}
 				}
+			}
 			Tree tree = sentence.get( SentimentCoreAnnotations.SentimentAnnotatedTree.class );
 			sentiment = RNNCoreAnnotations.getPredictedClass( tree );
-			System.out.println( "Sentiment: " + sentiment );
+			String sent = "Sentiment: " + sentiment;
+			if ( sentiment < 2 )
+				sent = sent + " (Negative)";
+			else if ( sentiment == 2 )
+				sent = sent + "(Neutral)";
+			else if ( sentiment > 2 )
+				sent = sent + "(Positive)";
+			System.out.println( sent );
 		}
 		
 		if ( data.isCategory( "math" ) )
@@ -149,6 +160,10 @@ public class InputProcessor {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+		} else if ( data.isCategory( "time" ) )
+		{
+			interpretation = "Time and date information.";
+			response = DateBot.getInformation( data );
 		} else
 			understood = false;
 		

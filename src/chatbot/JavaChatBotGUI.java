@@ -1,4 +1,11 @@
 
+/*
+ * JavaChatBotGUI
+ * 
+ * Provides the GUI for interaction with the bot and responses
+ * from the bot.
+ */
+
 package chatbot;
 
 import chatbot.utils.InputData;
@@ -33,9 +40,9 @@ public class JavaChatBotGUI extends JFrame implements KeyListener
 		setLayout(new FlowLayout());
 		
 		add(new Label("Chat: "));
-		chatInput = new TextField(90);
+		chatInput = new TextField(20);
 		add(chatInput);
-		chatDisplay = new TextArea(27,100);
+		chatDisplay = new TextArea(40,80);
 		chatDisplay.setEditable(false);
 		add(chatDisplay);
 		

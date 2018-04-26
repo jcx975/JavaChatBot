@@ -1,4 +1,10 @@
 
+/*
+ * BotDirections
+ * 
+ * Opens Google Maps with directions to specified location.
+ */
+
 package chatbot.components;
 
 import java.io.IOException;
@@ -16,13 +22,11 @@ public class BotDirections {
 		try {
 			url = new URI( "https://www.google.com/maps?q=directions+to+" + inputdata.getLocation() );
 		} catch (URISyntaxException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		try {
 			java.awt.Desktop.getDesktop().browse( url );
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

@@ -1,3 +1,11 @@
+
+/*
+ * WeatherBot
+ * 
+ * Retrieves latest weather information for a specified location
+ * using the OpenWeatherMap API.
+ */
+
 package chatbot.components;
 import java.io.*;
 import java.util.*;

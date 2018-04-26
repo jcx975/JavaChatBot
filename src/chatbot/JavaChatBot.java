@@ -1,3 +1,10 @@
+
+/*
+ * JavaChatBot
+ * 
+ * Main class of the bot.
+ */
+
 package chatbot;
 
 import chatbot.components.BotMath;

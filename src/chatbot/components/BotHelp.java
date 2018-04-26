@@ -1,4 +1,10 @@
 
+/*
+ * BotHelp
+ * 
+ * Shows help information about the bot.
+ */
+
 package chatbot.components;
 
 public class BotHelp {

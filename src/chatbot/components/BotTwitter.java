@@ -1,6 +1,13 @@
-package components;
 
-import utils.InputData;
+/*
+ * BotTwitter
+ * 
+ * Shows the latest tweets from a specified username using Twitter API.
+ */
+
+package chatbot.components;
+
+import chatbot.utils.InputData;
 
 import java.util.*;
 
@@ -25,7 +32,6 @@ public class BotTwitter {
 	public static String retrieveTweet(InputData input) throws TwitterException {
 		buildTwitterConfig();
 		String response = "";
-		System.out.println(input.getTwitterHandle());
 		//System.out.println(input.getTwitterHandle());
 		List<Status> tweets = twitter.getUserTimeline(input.getTwitterHandle());
         for (Status tweet : tweets) {

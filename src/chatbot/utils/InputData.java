@@ -1,5 +1,12 @@
 
-package utils;
+/*
+ * InputData
+ * 
+ * A utility class for gathering information about user
+ * input and storing data more easily.
+ */
+
+package chatbot.utils;
 
 public class InputData
 {
@@ -102,7 +109,6 @@ public class InputData
 	public void setTwitterHandle(String twitterHandle)
 	{
 		this.twitterHandle = twitterHandle;
-		System.out.println(twitterHandle);
 	}
 	
 	public String getTwitterHandle()
