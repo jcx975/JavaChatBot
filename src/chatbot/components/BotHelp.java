@@ -6,7 +6,8 @@ public class BotHelp {
 		String response = "Hello! I can help with many things, such as: " +
 						"\nMath (for example, \"what is two plus two?\")" +
 						"\nWeather (for example, \"what is the weather in winona,us?\")" +
-						"\nDirections (for example, \"directions to Rochester\")";
+						"\nDirections (for example, \"directions to Rochester\")" +
+                        "\nTweets (for example, \"tweets from @kanyewest\"";
 	
 		return response;				
 	}
